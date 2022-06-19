@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 export const signUp = async (req, res) => {
   //   console.log("register", req.body);
-
   const { name, email, password } = req.body;
   if (!name) {
     return res.status(400).send("Name is required");
@@ -62,7 +61,9 @@ export const logIn = async (req, res) => {
   if (!isMatch) {
     return res.status(400).send("Password is incorrect");
   }
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "7D",
+  });
 
   user.password = undefined;
   try {
@@ -73,5 +74,19 @@ export const logIn = async (req, res) => {
     });
   } catch (err) {
     return res.status(400).send(err);
+  }
+};
+
+export const currentUser = async (req, res) => {
+  // console.log(req.auth);
+  try {
+    const user = await User.findById(req.auth._id);
+    return res.json({
+      ok: "true",
+      user,
+    });
+    
+  } catch (error) {
+    console.log("ERROR=>", error);
   }
 };
