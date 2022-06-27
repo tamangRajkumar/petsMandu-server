@@ -7,7 +7,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-
 // Upload Image to cloudinary and response back image url and public id
 export const uploadImage = async (req, res) => {
   console.log("req files=> ", req.files);
@@ -24,9 +23,27 @@ export const uploadImage = async (req, res) => {
   }
 };
 
-
-
 // create post submit to database
 export const createPost = (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
+  // console.log(req.user)
+  const { description, address, image } = req.body;
+  // console.log(description, address, image)
+  if (!description.length) {
+    return res.json({
+      error: "Description is needed",
+    });
+  }
+  try {
+    const post = new Post({
+      description,
+      address,
+      image,
+      postedBy: req.auth._id,
+    });
+    post.save();
+    res.json(post);
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
 };

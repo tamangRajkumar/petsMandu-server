@@ -11,6 +11,6 @@ import { signUp, logIn, currentUser } from "../controllers/auth";
 router.post("/signup", signUp);
 router.post("/logIn", logIn);
 
-router.get("/current-user", requireSignin, currentUser);
+router.get("/current-user", requireSignin , currentUser);
 
 module.exports = router;

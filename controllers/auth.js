@@ -85,10 +85,7 @@ export const currentUser = async (req, res) => {
       ok: "true",
       user,
     });
-    
   } catch (error) {
     console.log("ERROR=>", error);
   }
 };
-
-

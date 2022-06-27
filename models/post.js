@@ -4,7 +4,11 @@ const { ObjectId } = mongoose.Schema;
 
 const postSchema = new mongoose.Schema(
   {
-    content: {
+    description: {
+      type: {},
+      required: true,
+    },
+    address: {
       type: {},
       required: true,
     },
