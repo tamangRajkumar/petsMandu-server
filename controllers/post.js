@@ -42,8 +42,24 @@ export const createPost = (req, res) => {
       postedBy: req.auth._id,
     });
     post.save();
-    res.json(post);
+    return res.json({
+      saved: "true",
+      post,
+    });
   } catch (error) {
     console.log("Error=> ", error);
+  }
+};
+
+export const userPosts = async (req, res) => {
+  // console.log(req.auth);
+  try {
+    const posts = await Post.find({ postedBy: req.auth._id })
+      .populate("postedBy", "_id image")
+      .sort({ createdAt: -1 })
+      .limit(10);
+    return res.json(posts);
+  } catch (error) {
+    console.log("Error=>", error);
   }
 };
