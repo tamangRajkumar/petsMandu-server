@@ -26,7 +26,7 @@ export const uploadImage = async (req, res) => {
 // create post submit to database
 export const createPost = (req, res) => {
   // console.log(req.body);
-  // console.log(req.user)
+  // console.log(req.auth._id)
   const { description, address, image } = req.body;
   // console.log(description, address, image)
   if (!(description.length && address.length)) {
@@ -51,6 +51,7 @@ export const createPost = (req, res) => {
   }
 };
 
+// Fetch user post in dashboard
 export const userPosts = async (req, res) => {
   // console.log(req.auth);
   try {
@@ -61,5 +62,22 @@ export const userPosts = async (req, res) => {
     return res.json(posts);
   } catch (error) {
     console.log("Error=>", error);
+  }
+};
+
+// delete post
+export const deletePost = async (req, res) => {
+  // console.log(req.params._id);
+  try {
+    const post = await Post.findByIdAndDelete(req.params._id);
+    // console.log(post.image)
+    if (post.image && post.image.public_id) {
+      const deleteImage = await cloudinary.uploader.destroy(
+        post.image.public_id
+      );
+    }
+    res.json({ deleted: true });
+  } catch (error) {
+    console.log("Error=> ", error);
   }
 };
