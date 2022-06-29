@@ -29,7 +29,7 @@ export const createPost = (req, res) => {
   // console.log(req.user)
   const { description, address, image } = req.body;
   // console.log(description, address, image)
-  if (!description.length) {
+  if (!(description.length && address.length)) {
     return res.json({
       error: "Description is needed",
     });
