@@ -12,6 +12,10 @@ const postSchema = new mongoose.Schema(
       type: {},
       required: true,
     },
+    category: {
+      type: {},
+      require: true,
+    },
     postedBy: {
       type: ObjectId,
       ref: "User",

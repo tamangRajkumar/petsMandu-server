@@ -27,9 +27,9 @@ export const uploadImage = async (req, res) => {
 export const createPost = (req, res) => {
   // console.log(req.body);
   // console.log(req.auth._id)
-  const { description, address, image } = req.body;
+  const { description, address, category, image } = req.body;
   // console.log(description, address, image)
-  if (!(description.length && address.length)) {
+  if (!(description.length && address.length && category.length)) {
     return res.json({
       error: "Description is needed",
     });
@@ -38,6 +38,7 @@ export const createPost = (req, res) => {
     const post = new Post({
       description,
       address,
+      category,
       image,
       postedBy: req.auth._id,
     });
@@ -59,6 +60,7 @@ export const userPosts = async (req, res) => {
       .populate("postedBy", "_id image")
       .sort({ createdAt: -1 })
       .limit(10);
+    console.log(posts);
     return res.json(posts);
   } catch (error) {
     console.log("Error=>", error);
