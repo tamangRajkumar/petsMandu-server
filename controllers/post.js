@@ -78,7 +78,7 @@ export const deletePost = async (req, res) => {
         post.image.public_id
       );
     }
-    res.json({ deleted: true });
+    res.json({ deleted: "true" });
   } catch (error) {
     console.log("Error=> ", error);
   }
