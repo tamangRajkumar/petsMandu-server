@@ -83,3 +83,17 @@ export const deletePost = async (req, res) => {
     console.log("Error=> ", error);
   }
 };
+
+export const adoptPets = async (req, res) => {
+  // console.log(req.body);
+  try {
+    const posts = await Post.find({ category: "adoptpets" })
+      .populate("postedBy", "_id image")
+      .sort({ createdAt: -1 })
+      .limit(10);
+    console.log(posts);
+    return res.json({ found: "true", posts });
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
+};
