@@ -4,9 +4,11 @@ import jwt from "jsonwebtoken";
 
 export const signUp = async (req, res) => {
   //   console.log("register", req.body);
-  const { name, email, password } = req.body;
-  if (!name) {
-    return res.status(400).send("Name is required");
+  let { fname, lname, email, password } = req.body;
+
+  // console.log(fname);
+  if (!fname && !lname) {
+    return res.status(400).send("First name and Last name are required");
   }
   if (!email) {
     return res.status(400).send("Email is required");
@@ -27,7 +29,8 @@ export const signUp = async (req, res) => {
   const hashedPassword = await hashPassword(password);
 
   const user = new User({
-    name,
+    fname,
+    lname,
     email,
     password: hashedPassword,
   });
