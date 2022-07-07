@@ -20,6 +20,6 @@ router.post("/create-post", requireSignin, createPost);
 router.post("/upload-image", formidable(10 * 1024 * 1024), uploadImage);
 router.get("/user-posts", requireSignin, userPosts);
 router.delete("/delete-post/:_id", requireSignin, deletePost);
-router.get("/fetchpostsbycategory", fetchPostsByCategory);
+router.post("/fetchpostsbycategory", fetchPostsByCategory);
 
 module.exports = router;

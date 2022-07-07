@@ -85,18 +85,19 @@ export const deletePost = async (req, res) => {
 };
 
 export const fetchPostsByCategory = async (req, res) => {
-  console.log(req.body);
-  // const category = req.body;
+  console.log(req.body.category);
+  const category = req.body.category;
 
   // console.log(category);
-  // try {
-  //   const posts = await Post.find({ category: category })
-  //     .populate("postedBy", "_id image")
-  //     .sort({ createdAt: -1 })
-  //     .limit(10);
-  //   console.log(posts);
-  //   return res.json(posts);
-  // } catch (error) {
-  //   console.log("Error=> ", error);
-  // }
+  
+  try {
+    const posts = await Post.find({ category: category })
+      .populate("postedBy", "_id image")
+      .sort({ createdAt: -1 })
+      .limit(10);
+    console.log(posts);
+    return res.json(posts);
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
 };
