@@ -85,7 +85,7 @@ export const deletePost = async (req, res) => {
 };
 
 export const fetchPostsByCategory = async (req, res) => {
-  console.log(req.body.category);
+  // console.log(req.body.category);
   const category = req.body.category;
 
   // console.log(category);
