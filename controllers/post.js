@@ -89,7 +89,7 @@ export const fetchPostsByCategory = async (req, res) => {
   const category = req.body.category;
 
   // console.log(category);
-  
+
   try {
     const posts = await Post.find({ category: category })
       .populate("postedBy", "_id image")
@@ -97,6 +97,21 @@ export const fetchPostsByCategory = async (req, res) => {
       .limit(10);
     console.log(posts);
     return res.json(posts);
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
+};
+
+//Fetch individual post
+export const fetchIndividualPost = async (req, res) => {
+  // console.log(req.body);
+  try {
+    const postId = req.params._id;
+    // console.log(postId);
+
+    const post = await Post.findById(postId).populate("postedBy", "_id image");
+    console.log(post);
+    return res.json(post);
   } catch (error) {
     console.log("Error=> ", error);
   }

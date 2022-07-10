@@ -13,6 +13,7 @@ import {
   userPosts,
   deletePost,
   fetchPostsByCategory,
+  fetchIndividualPost
 } from "../controllers/post";
 
 router.post("/create-post", requireSignin, createPost);
@@ -21,5 +22,6 @@ router.post("/upload-image", formidable(10 * 1024 * 1024), uploadImage);
 router.get("/user-posts", requireSignin, userPosts);
 router.delete("/delete-post/:_id", requireSignin, deletePost);
 router.post("/fetchpostsbycategory", fetchPostsByCategory);
+router.get("/fetchindividualpost/:_id", fetchIndividualPost)
 
 module.exports = router;
