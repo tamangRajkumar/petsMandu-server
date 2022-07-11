@@ -116,3 +116,16 @@ export const fetchIndividualPost = async (req, res) => {
     console.log("Error=> ", error);
   }
 };
+
+//Fetch post to edit in Modal
+export const fetchPostToEdit = async (req, res) => {
+  // console.log(req.body);
+  try {
+    const postId = req.body.postId;
+    const post = await Post.findById(postId);
+    // console.log(post);
+    return res.json(post);
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
+};
