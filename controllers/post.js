@@ -129,3 +129,12 @@ export const fetchPostToEdit = async (req, res) => {
     console.log("Error=> ", error);
   }
 };
+
+// Update Post
+export const updatePost = async (req, res) => {
+  console.log(req.params._idPost);
+  try {
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
+};
