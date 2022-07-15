@@ -132,8 +132,15 @@ export const fetchPostToEdit = async (req, res) => {
 
 // Update Post
 export const updatePost = async (req, res) => {
-  console.log(req.params._idPost);
+  // console.log(req.params._postId);
+  // console.log(req.body);
   try {
+    const postId = req.params._postId;
+    const postData = req.body;
+    // console.log(postId);
+    // console.log(postData);
+    const post = await Post.findByIdAndUpdate(postId, postData, { new: true });
+    return res.json({ updated: "true", post   });
   } catch (error) {
     console.log("Error=> ", error);
   }

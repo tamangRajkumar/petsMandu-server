@@ -26,6 +26,6 @@ router.delete("/delete-post/:_id", requireSignin, deletePost);
 router.post("/fetchpostsbycategory", fetchPostsByCategory);
 router.get("/fetchindividualpost/:_id", fetchIndividualPost);
 router.post("/fetchposttoedit", fetchPostToEdit);
-router.put("/updatepost/:_idPost", updatePost);
+router.put("/updatepost/:_postId", updatePost);
 
 module.exports = router;
