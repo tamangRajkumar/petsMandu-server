@@ -92,3 +92,23 @@ export const currentUser = async (req, res) => {
     console.log("ERROR=>", error);
   }
 };
+
+// Update User Profile
+export const updateUserProfile = async (req, res) => {
+  // console.log(req.body);
+  const userPhoto = req.body.image.url;
+  console.log(userPhoto);
+  const userId = req.auth._id;
+  console.log(req.auth._id);
+  try {
+    const userPhoto = await User.findByIdAndUpdate(userId, photo, {
+      new: true,
+    });
+    return res.json({
+      profilePhoto: true,
+      userPhoto,
+    });
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
+};
