@@ -24,7 +24,10 @@ const userSchema = new Schema(
     },
 
     about: {},
-    photo: String,
+    image: {
+      url: String,
+      public_id: String,
+    },
   },
   { timestamps: true }
 );

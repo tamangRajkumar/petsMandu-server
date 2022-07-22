@@ -1,4 +1,6 @@
 import Post from "../models/post";
+import User from "../models/user";
+
 import cloudinary from "cloudinary";
 
 cloudinary.config({
@@ -10,9 +12,10 @@ cloudinary.config({
 // Upload Image to cloudinary and response back image url and public id
 export const uploadImage = async (req, res) => {
   console.log("req files=> ", req.files);
+  const imagePath = req.files.image.path;
 
   try {
-    const result = await cloudinary.uploader.upload(req.files.image.path);
+    const result = await cloudinary.uploader.upload(imagePath);
     console.log("Uploaded image result=> ", result);
     res.json({
       url: result.secure_url,
@@ -104,14 +107,18 @@ export const fetchPostsByCategory = async (req, res) => {
 
 //Fetch individual post
 export const fetchIndividualPost = async (req, res) => {
-  // console.log(req.body);
+  const userId = req.auth._id;
+  console.log("user id is=>", userId);
   try {
     const postId = req.params._id;
     // console.log(postId);
 
     const post = await Post.findById(postId).populate("postedBy", "_id image");
-    console.log(post);
-    return res.json(post);
+    // console.log(post);
+    const user = await User.findById(userId);
+    user.password = undefined;
+    // console.log("User found", user);
+    return res.json({ post, user });
   } catch (error) {
     console.log("Error=> ", error);
   }
@@ -139,8 +146,9 @@ export const updatePost = async (req, res) => {
     const postData = req.body;
     // console.log(postId);
     // console.log(postData);
-    const post = await Post.findByIdAndUpdate(postId, postData, { new: true });
-    return res.json({ updated: "true", post   });
+    const user = await Post.findByIdAndUpdate(postId, postData, { new: true });
+
+    return res.json({ updated: "true", post });
   } catch (error) {
     console.log("Error=> ", error);
   }

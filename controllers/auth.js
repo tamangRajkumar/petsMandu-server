@@ -96,17 +96,24 @@ export const currentUser = async (req, res) => {
 // Update User Profile
 export const updateUserProfile = async (req, res) => {
   // console.log(req.body);
-  const userPhoto = req.body.image.url;
-  console.log(userPhoto);
+  const userImageData = req.body.image;
+  console.log(userImageData);
   const userId = req.auth._id;
   console.log(req.auth._id);
   try {
-    const userPhoto = await User.findByIdAndUpdate(userId, photo, {
-      new: true,
-    });
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { image: userImageData },
+      {
+        new: true,
+      }
+    );
+    user.password = undefined;
+    // console.log(user);
+    const userProfileImageData = user.image;
     return res.json({
-      profilePhoto: true,
-      userPhoto,
+      profileImage: "true",
+      userProfileImageData,
     });
   } catch (error) {
     console.log("Error=> ", error);
