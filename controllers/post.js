@@ -30,7 +30,7 @@ export const uploadImage = async (req, res) => {
 export const createPost = (req, res) => {
   // console.log(req.body);
   // console.log(req.auth._id)
-  const { description, address, category, image } = req.body;
+  const { title, description, address, category, image } = req.body;
   // console.log(description, address, image)
   if (!(description.length && address.length && category.length)) {
     return res.json({
@@ -39,6 +39,7 @@ export const createPost = (req, res) => {
   }
   try {
     const post = new Post({
+      title,
       description,
       address,
       category,
@@ -107,18 +108,19 @@ export const fetchPostsByCategory = async (req, res) => {
 
 //Fetch individual post
 export const fetchIndividualPost = async (req, res) => {
-  const userId = req.auth._id;
-  console.log("user id is=>", userId);
+  // const userId = req.auth._id;
+  // console.log("user id is=>", userId);
   try {
     const postId = req.params._id;
     // console.log(postId);
 
-    const post = await Post.findById(postId).populate("postedBy", "_id image");
-    // console.log(post);
-    const user = await User.findById(userId);
-    user.password = undefined;
+    const post = await Post.findById(postId)
+      .populate("postedBy", "_id fname lname image ")
+      .populate("comments.postedBy", "_id fname lname image");
+
     // console.log("User found", user);
-    return res.json({ post, user });
+    console.log(post);
+    return res.json(post);
   } catch (error) {
     console.log("Error=> ", error);
   }
@@ -146,9 +148,83 @@ export const updatePost = async (req, res) => {
     const postData = req.body;
     // console.log(postId);
     // console.log(postData);
-    const user = await Post.findByIdAndUpdate(postId, postData, { new: true });
+    const post = await Post.findByIdAndUpdate(postId, postData, { new: true });
 
     return res.json({ updated: "true", post });
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
+};
+
+// Submit Post Comment
+export const submitPostComment = async (req, res) => {
+  const userId = req.auth._id;
+  const comment = req.body.addComment;
+  const postId = req.body.postId;
+  // console.log(req.body);
+  // console.log(comment.length);
+  if (comment.length == 0) {
+    return res.status(400).send("Comment is required");
+  }
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $push: {
+          comments: {
+            text: comment,
+            postedBy: userId,
+          },
+        },
+      },
+      { new: true }
+    )
+      .populate("postedBy", "_id fname lname image ")
+      .populate("comments.postedBy", "_id fname lname image");
+
+    console.log(updatedPost);
+    return res.json({ commentPosted: "true", updatedPost });
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
+};
+
+// Delete Post Comment
+export const deletePostComment = async (req, res) => {
+  // console.log(req.body);
+  const { postId, commentId } = req.body;
+
+  try {
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $pull: {
+          comments: {
+            _id: commentId,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    return res.json({ postCommentDeleted: "true" });
+  } catch (error) {
+    console.log("Error=> ", error);
+  }
+};
+
+// Post Comments Data Only
+export const postCommentsDataOnly = async (req, res) => {
+  // console.log(req.body);
+  const { postId } = req.body;
+  // console.log(postId);
+  try {
+    const post = await Post.findById(postId).populate(
+      "comments.postedBy",
+      "_id fname lname image"
+    );
+    // console.log(post.comments);
+    return res.json(post.comments);
   } catch (error) {
     console.log("Error=> ", error);
   }

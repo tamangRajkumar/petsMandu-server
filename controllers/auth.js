@@ -97,9 +97,9 @@ export const currentUser = async (req, res) => {
 export const updateUserProfile = async (req, res) => {
   // console.log(req.body);
   const userImageData = req.body.image;
-  console.log(userImageData);
+  // console.log(userImageData);
   const userId = req.auth._id;
-  console.log(req.auth._id);
+  // console.log(req.auth._id);
   try {
     const user = await User.findByIdAndUpdate(
       userId,

@@ -16,16 +16,22 @@ import {
   fetchIndividualPost,
   fetchPostToEdit,
   updatePost,
+  submitPostComment,
+  deletePostComment,
+  postCommentsDataOnly
 } from "../controllers/post";
 
 router.post("/create-post", requireSignin, createPost);
 
-router.post("/upload-image", formidable(10 * 1024 * 1024), uploadImage);
+router.post("/upload-image", formidable(20 * 1024 * 1024), uploadImage);
 router.get("/user-posts", requireSignin, userPosts);
 router.delete("/delete-post/:_id", requireSignin, deletePost);
 router.post("/fetchpostsbycategory", fetchPostsByCategory);
 router.get("/fetchindividualpost/:_id", requireSignin, fetchIndividualPost);
 router.post("/fetchposttoedit", fetchPostToEdit);
 router.put("/updatepost/:_postId", updatePost);
+router.post("/submit-post-comment", requireSignin, submitPostComment);
+router.put("/delete-post-comment", requireSignin, deletePostComment);
+router.post("/post-comments-data", requireSignin, postCommentsDataOnly);
 
 module.exports = router;

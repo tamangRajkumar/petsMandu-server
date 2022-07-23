@@ -4,6 +4,10 @@ const { ObjectId } = mongoose.Schema;
 
 const postSchema = new mongoose.Schema(
   {
+    title: {
+      type: {},
+      require: true,
+    },
     description: {
       type: {},
       required: true,
@@ -29,10 +33,12 @@ const postSchema = new mongoose.Schema(
     comments: [
       {
         text: String,
+
         created: {
           type: Date,
-          dafault: Date.now,
+          default: Date.now,
         },
+
         postedBy: {
           type: ObjectId,
           ref: "User",
