@@ -99,8 +99,9 @@ export const fetchPostsByCategory = async (req, res) => {
       .populate("postedBy", "_id image")
       .sort({ createdAt: -1 })
       .limit(10);
-    console.log(posts);
-    return res.json(posts);
+    // console.log(posts);
+    const postCategory = posts.category;
+    return res.json({ category: postCategory, posts });
   } catch (error) {
     console.log("Error=> ", error);
   }
