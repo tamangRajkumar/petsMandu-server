@@ -100,7 +100,8 @@ export const fetchPostsByCategory = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(10);
     // console.log(posts);
-    const postCategory = posts.category;
+    const postCategory = posts[0].category;
+    console.log(postCategory)
     return res.json({ category: postCategory, posts });
   } catch (error) {
     console.log("Error=> ", error);
