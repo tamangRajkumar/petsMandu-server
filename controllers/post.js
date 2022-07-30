@@ -61,7 +61,7 @@ export const userPosts = async (req, res) => {
   // console.log(req.auth);
   try {
     const posts = await Post.find({ postedBy: req.auth._id })
-      .populate("postedBy", "_id image")
+      .populate("postedBy", "_id fname lname image")
       .sort({ createdAt: -1 })
       .limit(10);
     console.log(posts);
@@ -117,8 +117,8 @@ export const fetchIndividualPost = async (req, res) => {
     // console.log(postId);
 
     const post = await Post.findById(postId)
-      .populate("postedBy", "_id fname lname image ")
-      .populate("comments.postedBy", "_id fname lname image");
+      .populate("postedBy", "_id fname lname image email ")
+      .populate("comments.postedBy", "_id fname lname image ");
 
     // console.log("User found", user);
     console.log(post);

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const signUp = async (req, res) => {
   //   console.log("register", req.body);
-  let { fname, lname, email, password } = req.body;
+  let { fname, lname, email, password, image } = req.body;
 
   // console.log(fname);
   if (!fname && !lname) {
@@ -32,6 +32,7 @@ export const signUp = async (req, res) => {
     fname,
     lname,
     email,
+    image,
     password: hashedPassword,
   });
 
@@ -75,8 +76,8 @@ export const logIn = async (req, res) => {
       token,
       user,
     });
-  } catch (err) {
-    return res.status(400).send(err);
+  } catch (error) {
+    return res.status(400).send(error);
   }
 };
 
@@ -89,7 +90,7 @@ export const currentUser = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log("ERROR=>", error);
+    return res.status(400).send(error);
   }
 };
 
@@ -114,6 +115,7 @@ export const updateUserProfile = async (req, res) => {
     return res.json({
       profileImage: "true",
       userProfileImageData,
+      user
     });
   } catch (error) {
     console.log("Error=> ", error);
